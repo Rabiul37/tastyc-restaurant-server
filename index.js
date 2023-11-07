@@ -28,11 +28,20 @@ async function run() {
       .collection("restaurantItem");
     const userOrder = client.db("testycDB").collection("order");
     const registeruser = client.db("testycDB").collection("user");
+    const userAddItemCollection = client.db("testycDB").collection("userItem");
 
+    //user added food item display operation
+
+    //user add food item operation
+    app.post("/userItem", async (req, res) => {
+      const userItem = req.body;
+      const result = await userAddItemCollection.insertOne(userItem);
+      res.send(result);
+    });
     //user operation
     app.post("/user", async (req, res) => {
       const user = req.body;
-      const result = await userOrder.insertOne(user);
+      const result = await registeruser.insertOne(user);
       res.send(result);
     });
     // user order operation
