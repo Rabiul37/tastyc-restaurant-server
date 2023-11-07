@@ -69,11 +69,19 @@ async function run() {
 
     //restaurant item operation
     app.get("/restaurantItem", async (req, res) => {
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
       const cursor = restaurantItemCollection.find();
-      const result = await cursor.toArray();
+      const result = await cursor
+        .skip(page * size)
+        .limit(size)
+        .toArray();
       res.send(result);
     });
-
+    app.get("/restaurantItemCount", async (req, res) => {
+      const count = await restaurantItemCollection.estimatedDocumentCount();
+      res.send({ count });
+    });
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
     console.log(
