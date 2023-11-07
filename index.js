@@ -31,7 +31,11 @@ async function run() {
     const userAddItemCollection = client.db("testycDB").collection("userItem");
 
     //user added food item display operation
-
+    app.get("/userItem", async (req, res) => {
+      const cursor = userAddItemCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
     //user add food item operation
     app.post("/userItem", async (req, res) => {
       const userItem = req.body;
