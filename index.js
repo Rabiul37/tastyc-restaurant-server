@@ -26,6 +26,14 @@ async function run() {
     const restaurantItemCollection = client
       .db("testycDB")
       .collection("restaurantItem");
+    const userOrder = client.db("testycDB").collection("order");
+
+    // user order operation
+    app.post("/order", async (req, res) => {
+      const order = req.body;
+      const result = await userOrder.insertOne(order);
+      res.send(result);
+    });
 
     //restaurant item operation
     app.get("/restaurantItem", async (req, res) => {
