@@ -31,11 +31,7 @@ async function run() {
     const userAddItemCollection = client.db("testycDB").collection("userItem");
 
     //user added food item display operation
-    app.get("/userItem", async (req, res) => {
-      const cursor = userAddItemCollection.find();
-      const result = await cursor.toArray();
-      res.send(result);
-    });
+
     //user add food item operation
     app.post("/userItem", async (req, res) => {
       const userItem = req.body;
@@ -55,7 +51,11 @@ async function run() {
       res.send(result);
     });
     app.get("/order", async (req, res) => {
-      const cursor = userOrder.find();
+      let query = {};
+      if (req.query?.buyerEmail) {
+        query = { buyerEmail: req.query.buyerEmail };
+      }
+      const cursor = userOrder.find(query);
       const result = await cursor.toArray();
       res.send(result);
     });
