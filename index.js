@@ -74,7 +74,16 @@ async function run() {
       const result = await userOrder.deleteOne(query);
       res.send(result);
     });
-
+    app.get("/restaurantItem", async (req, res) => {
+      const page = parseInt(req.query.page);
+      const size = parseInt(req.query.size);
+      const cursor = restaurantItemCollection.find();
+      const result = await cursor
+        .skip(page * size)
+        .limit(size)
+        .toArray();
+      res.send(result);
+    });
     //restaurant item operation
 
     app.get("/restaurantItemCount", async (req, res) => {
